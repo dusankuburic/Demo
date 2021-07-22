@@ -1,0 +1,62 @@
+﻿syntax = "proto3";
+
+
+option csharp_namespace = "TransportGrpc.Protos.Item";
+import "google/protobuf/timestamp.proto";
+
+
+service ItemProtoService {
+	rpc GetItem (GetItemRequest) returns (ItemModel);
+	rpc GetAllItems (GetAllItemsRequest) returns (stream ItemModel);
+
+	rpc AddItem (AddItemRequest) returns (ItemModel);
+	rpc UpdateItem (UpdateItemRequest) returns (ItemModel);
+	rpc DeleteItem (DeleteItemRequest) returns (DeleteItemResponse);
+
+	rpc AddMultipleItems (stream ItemModel) returns (AddMultipleItemsResponse);
+}
+
+message GetItemRequest {
+	int32 id = 1;
+}
+
+message GetAllItemsRequest {
+
+}
+
+message AddItemRequest {
+	ItemModel item = 1;
+}
+
+message UpdateItemRequest {
+	ItemModel item = 1;
+}
+
+message DeleteItemRequest {
+	int32 itemId = 1;
+}
+
+message DeleteItemResponse {
+	bool success = 1;
+}
+
+message AddMultipleItemsResponse {
+	bool success = 1;
+	int32 insertCount = 2;
+}
+
+message ItemModel {
+	int32 id = 1;
+	string name = 2;
+	string description = 3;
+	float price = 4;
+	RiskStatus hazardStatus = 5;
+	RiskStatus damageStatus = 6;
+	google.protobuf.Timestamp createdAt = 7;
+}
+
+enum RiskStatus {
+	LOW = 0;
+	MODERATE = 1;
+	HIGH = 2;
+}
